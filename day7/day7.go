@@ -23,14 +23,14 @@ func main() {
 	scanner := bufio.NewScanner(file)
 
 	total := 0
-	part2 := true
+	//part2 := true
 	for scanner.Scan() {
 		line := scanner.Text()
 		if line == "" {
 			continue
 		}
 		target, nums := parseLine(line)
-		if canMatch(target, nums, part2) {
+		if canReach(target, nums) {
 			total += target
 		}
 	}
@@ -55,10 +55,36 @@ func parseLine(line string) (int, []int) {
 	return target, nums
 }
 
-func canMatch(target int, nums []int, part2 bool) bool {
-	return dfs(nums[0], nums[1:], target, part2)
+func canReach(target int, nums []int) bool {
+	return helper(nums[0], nums[1:], target)
 }
 
-func dfs(current int, remaining []int, target int, part2 bool) bool {
-    sc = bufio.
+func helper(current int, remaining []int, target int) bool {
+	if len(remaining) == 0 {
+		return current == target
+	}
+
+	next := remaining[0]
+	rest := remaining[1:]
+
+	if helper(current+next, rest, target) {
+		return true
+	}
+
+	if helper(current*next, rest, target) {
+		return true
+	}
+
+	conact := concatInt(current, next)
+	if helper(conact, rest, target) {
+		return true
+	}
+
+	return false
+}
+
+func concatInt(current, next int) int {
+	s := strconv.Itoa(current) + strconv.Itoa(next)
+	v, _ := strconv.Atoi(s)
+	return v
 }
