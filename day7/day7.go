@@ -23,7 +23,6 @@ func main() {
 	scanner := bufio.NewScanner(file)
 
 	total := 0
-	//part2 := true
 	for scanner.Scan() {
 		line := scanner.Text()
 		if line == "" {
@@ -59,6 +58,7 @@ func canReach(target int, nums []int) bool {
 	return helper(nums[0], nums[1:], target)
 }
 
+//used recursion which is not time effective prefer using other method
 func helper(current int, remaining []int, target int) bool {
 	if len(remaining) == 0 {
 		return current == target
