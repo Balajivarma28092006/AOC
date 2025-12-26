@@ -34,7 +34,7 @@ function solve_part1(input)
 
     # Checksum
     checksum = 0
-    for i in 1:length(disk)
+    for i in eachindex(disk)
         if disk[i] != -1
             checksum += (i - 1) * disk[i]
         end
@@ -67,7 +67,7 @@ function solve_part2(input)
     for i in length(files):-1:1
         id, fstart, flen = files[i]
 
-        for j in 1:length(free)
+        for j in eachindex(free)
             fpos, flen_free = free[j]
 
             if fpos < fstart && flen_free >= flen
