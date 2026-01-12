@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "c:/Users/balaj/vscode/AdventofCode/AOC/day11",
-      "program": "c:/Users/balaj/vscode/AdventofCode/AOC/day11/build/Debug/outDebug",
+      "cwd": "c:/Users/balaj/vscode/AdventofCode/AOC/day12",
+      "program": "c:/Users/balaj/vscode/AdventofCode/AOC/day12/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [

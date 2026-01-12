@@ -16,6 +16,7 @@ public class Main {
 
     static final int BLINKS_PART1 = 25;
     static final int BLINKS_PART2 = 75;
+    
 
     public static void main(String[] args) {
         String filename = "day11.txt";
