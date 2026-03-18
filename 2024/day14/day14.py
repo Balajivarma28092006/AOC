@@ -31,11 +31,11 @@ def part1(robots):
             q3 += 1
         if nx > WIDTH // 2 and ny > HEIGHT // 2:
             q4 += 1
-        
+
     return q1 * q2 * q3 * q4
 
 def part2(robots):
-    
+
     t = 0
     while True:
         t += 1
@@ -54,8 +54,7 @@ def part2(robots):
 
         if valid:
             return t
-    
-    
+
 
 if __name__ == "__main__":
     inputs = parse_input("day14_inputs.txt")

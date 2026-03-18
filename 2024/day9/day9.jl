@@ -96,6 +96,7 @@ function solve_part2(input)
     return checksum
 end
 
+for
 
 input = strip(read("day9_inputs.txt", String))
 println(solve_part1(input))
