@@ -1,42 +1,29 @@
-using Printf
+function best_number(line, k)
+    digits = [parse(Int, c) for c in line if isdigit(c)]
+    drop = length(digits) - k
+    stack = Int[]
 
-function max_number_from_digits(s::String, k::Int)
-    digits = collect(s)
-    n = length(digits)
-
-    result = Char[]
-    start = 1
-
-    for i in 1:k
-        last = n - ( k - i )
-
-        max_digit = '0'
-        max_index = start
-
-        for j in start:last
-            if digits[j] > max_digit
-                max_digit = digits[j]
-                max_index = j
-            end
+    for d in digits
+        while drop > 0 && !isempty(stack) && stack[end] < d
+            pop!(stack)
+            drop -= 1
         end
-
-        push!(result, max_digit)
-        start = max_index + 1
+        push!(stack, d)
     end
 
-    return join(result)
-end
+    stack = stack[1:min(k, length(stack))]
 
-function main()
-    input = read("inputs.txt", String)
-    lines = split(chomp(input), '\n')
-
-    total = 0
-    for line in lines
-        val = parse(Int, max_number_from_digits(String(line), 2))
-        total += val
+    val = 0
+    for d in stack
+        val = val * 10 + d
     end
-    @printf("Part1: %.2f\n", total)
+    return val
 end
 
-main()
+lines = readlines("inputs.txt")
+
+p1 = sum(best_number(line, 2) for line in lines)
+p2 = sum(best_number(line, 12) for line in lines)
+
+println("Part 1: ", p1)
+println("Part 2: ", p2)
