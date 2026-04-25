@@ -3,7 +3,7 @@ function best_number(line, k)
     drop = length(digits) - k
     stack = Int[]
 
-<<<<<<< HEAD
+# <<<<<<< HEAD
     for d in digits
         while drop > 0 && !isempty(stack) && stack[end] < d
             pop!(stack)
@@ -19,7 +19,8 @@ function best_number(line, k)
         val = val * 10 + d
     end
     return val
-=======
+end
+# =======
 # Optimized Part 1: O(n) using a Monotonic Stack with a length limit
 # To get the largest number of length K, we remove (length(s) - k) digits.
 function part1(s::AbstractString, k::Int)
@@ -92,13 +93,8 @@ function main()
 
     @printf("Part1: %s\n", string(total1))
     @printf("Part2: %s\n", string(total2))
->>>>>>> ac9a4c1 (so commiting the stash)
 end
 
 lines = readlines("inputs.txt")
 
-p1 = sum(best_number(line, 2) for line in lines)
-p2 = sum(best_number(line, 12) for line in lines)
-
-println("Part 1: ", p1)
-println("Part 2: ", p2)
+main()
