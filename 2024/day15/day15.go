@@ -8,8 +8,8 @@ import (
 	"strings"
 )
 
-//directions
-var dirs = map[byte][2]int {
+// directions
+var dirs = map[byte][2]int{
 	'^': {-1, 0},
 	'v': {1, 0},
 	'<': {0, -1},
@@ -33,7 +33,7 @@ func readGrid(filename string) [][]byte {
 	return grid
 }
 
-func readDirections(filename string) string{
+func readDirections(filename string) string {
 	file, err := os.Open(filename)
 	if err != nil {
 		log.Fatal(err)
@@ -51,7 +51,7 @@ func readDirections(filename string) string{
 	return moves.String()
 }
 
-func move(grid [][]byte, r, c int, dir byte)(int , int) {
+func move(grid [][]byte, r, c int, dir byte) (int, int) {
 	dr := dirs[dir][0]
 	dc := dirs[dir][1]
 
@@ -73,13 +73,13 @@ func move(grid [][]byte, r, c int, dir byte)(int , int) {
 	// pushing box
 	if grid[nr][nc] == 'O' {
 		cr, cc := nr, nc
-		
+
 		// find end of the box chain
-		for grid[cr][cc] == 'O' {	
+		for grid[cr][cc] == 'O' {
 			cr += dr
 			cc += dc
-		}	
-		
+		}
+
 		//blocked by wall
 		if grid[cr][cc] == '#' {
 			return r, c
@@ -117,7 +117,6 @@ func gpsSum(grid [][]byte) int {
 func main() {
 	grid := readGrid("grid.txt")
 	moves := readDirections("directions.txt")
-
 
 	// first find the position of the robot
 	var r, c int
