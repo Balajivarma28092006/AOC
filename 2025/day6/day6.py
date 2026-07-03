@@ -1,30 +1,69 @@
 from math import prod
 
-with open("inputs.txt") as f:
-    lines = [line.strip() for line in f if line.strip()]
+def solve(filename="inputs.txt"):
+    with open(filename, "r") as f:
+        lines = f.read().splitlines()
 
-symbols = lines[-1].split()
-matrix = [list(map(int, line.split())) for line in lines[:-1]]
-mappings = {}
+    width = max(len(line) for line in lines)
+    grid = [line.ljust(width) for line in lines]
 
-for col in range(len(symbols)):
-    symbol = symbols[col]
-    values = [row[col] for row in matrix]
+    rows = len(grid)
+    op_row = rows - 1
 
-    if symbol not in mappings:
-        mappings[symbol] = []
+    blank_col = [
+        all(grid[r][c] == " " for r in range(rows))
+        for c in range(width)
+    ]
 
-    mappings[symbol].append(values)
+    part1 = 0
+    part2 = 0
 
-part_total1 = 0
+    c = 0
+    while c < width:
+        if blank_col[c]:
+            c += 1
+            continue
 
-for symbol, value_lists in mappings.items():
-    for value in value_lists:
-        if symbol == "+":
-            part_total1 += sum(value)
-        elif symbol == "*":
-            part_total1+= prod(value)
+        start = c
+        while c < width and not blank_col[c]:
+            c += 1
+        end = c
+
+        op = grid[op_row][start:end].strip()
+
+        # ---------- Part 1 ----------
+        nums1 = []
+        for row in range(op_row):
+            s = grid[row][start:end].strip()
+            if s:
+                nums1.append(int(s))
+
+        if op == "+":
+            part1 += sum(nums1)
         else:
-            raise ValueError(f"Unknown symbol: {symbol}")
+            part1 += prod(nums1)
 
-print(part_total1)
+        # ---------- Part 2 ----------
+        nums2 = []
+        for col in range(end - 1, start - 1, -1):
+            digits = []
+
+            for row in range(op_row):
+                ch = grid[row][col]
+                if ch.isdigit():
+                    digits.append(ch)
+
+            if digits:
+                nums2.append(int("".join(digits)))
+
+        if op == "+":
+            part2 += sum(nums2)
+        else:
+            part2 += prod(nums2)
+
+    print("Part 1:", part1)
+    print("Part 2:", part2)
+
+
+if __name__ == "__main__":
+    solve("inputs.txt")
