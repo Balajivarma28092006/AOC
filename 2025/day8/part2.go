@@ -1,0 +1,201 @@
+package main
+
+import (
+	"bufio"
+	"fmt"
+	"os"
+	"sort"
+	"strconv"
+	"strings"
+)
+
+type Point struct {
+	x, y, z int
+}
+
+// basically for every point compute the edge distance and store it here
+// so for like n points we going to have (n, 2) like nC2 ways
+type Edge struct {
+	u, v int
+	dist int64
+}
+
+// DSU or Union find
+type DSU struct {
+	parent []int
+	size   []int
+}
+
+// DSU implementation
+func NewDSU(n int) *DSU {
+	parent := make([]int, n)
+	size := make([]int, n)
+
+	for i := range n {
+		parent[i] = i
+		size[i] = 1
+	}
+	return &DSU{
+		parent: parent,
+		size:   size,
+	}
+}
+
+func (d *DSU) Find(x int) int {
+	if d.parent[x] != x {
+		d.parent[x] = d.Find(d.parent[x])
+	}
+	return d.parent[x]
+}
+
+func (d *DSU) Union(a, b int) {
+	ra := d.Find(a)
+	rb := d.Find(b)
+
+	if ra == rb {
+		return
+	}
+
+	// Union by sizes
+	if d.size[ra] < d.size[rb] {
+		ra, rb = rb, ra
+	}
+
+	d.parent[rb] = ra
+	d.size[ra] += d.size[rb]
+}
+
+func sqaureDistance(a, b Point) int64 {
+	dx := int64(a.x - b.x)
+	dy := int64(a.y - b.y)
+	dz := int64(a.z - b.z)
+	return dx*dx + dy*dy + dz*dz
+}
+
+func readPoints(filename string) ([]Point, error) {
+	file, err := os.Open(filename)
+	if err != nil {
+		return nil, err
+	}
+	defer file.Close()
+
+	var points []Point
+	scanner := bufio.NewScanner(file)
+
+	for scanner.Scan() {
+		line := strings.TrimSpace(scanner.Text())
+		if line == "" {
+			continue
+		}
+
+		parts := strings.Split(line, ",")
+		if len(parts) != 3 {
+			return nil, fmt.Errorf("Invalid line: %s", line)
+		}
+
+		// get the points from the line
+		x, err1 := strconv.Atoi(strings.TrimSpace(parts[0]))
+		y, err2 := strconv.Atoi(strings.TrimSpace(parts[1]))
+		z, err3 := strconv.Atoi(strings.TrimSpace(parts[2]))
+		if err1 != nil || err2 != nil || err3 != nil {
+			return nil, fmt.Errorf("Invalid data at this thing %s", line)
+		}
+
+		// append the x, y, z to the point
+		points = append(points, Point{
+			x: x,
+			y: y,
+			z: z,
+		})
+	}
+
+	if err := scanner.Err(); err != nil {
+		return nil, err
+	}
+
+	return points, nil
+}
+
+func main() {
+	points, err := readPoints("input.txt")
+	if err != nil {
+		fmt.Printf("Dawg something wrong here %v", err)
+		return
+	}
+
+	n := len(points)
+	if n < 3 {
+		fmt.Println("Need at least 3 junction boxes.")
+		return
+	}
+
+	// we gonna build all the Edge
+	edges := make([]Edge, 0, n*(n-1)/2) // as we have nC2 total points
+	for i := range n {
+		for j := i + 1; j < n; j++ {
+			edges = append(edges, Edge{
+				u:    i,
+				v:    j,
+				dist: sqaureDistance(points[i], points[j]),
+			})
+		}
+	}
+
+	// sort them based on the distances calculated
+	sort.Slice(edges, func(i, j int) bool {
+		return edges[i].dist < edges[j].dist
+	})
+
+	// the length of edges is less compared to 1000 conections
+	//k := min(1000, len(edges))
+	dsu := NewDSU(n)
+	componenets := n
+
+	for _, e := range edges {
+		ru := dsu.Find(e.u)
+		rv := dsu.Find(e.v)
+
+		if ru == rv {
+			continue
+		}
+
+		dsu.Union(ru, rv)
+		componenets--
+		if componenets == 1 {
+			ans := points[e.u].x * points[e.v].x
+			fmt.Println(ans)
+			break
+		}
+	}
+
+	/*
+		// then find the component size
+		componentSize := make(map[int]int)
+		for i := range n {
+			root := dsu.Find(i)
+			componentSize[root]++
+		}
+
+		sizes := make([]int, 0, len(componentSize))
+		for _, sz := range componentSize {
+			sizes = append(sizes, sz)
+		}
+
+		// now we got all the unions sets lets find the top three things
+		// for that sort the sizes
+		sort.Slice(sizes, func(i int, j int) bool {
+			return sizes[i] > sizes[j]
+		})
+
+		fmt.Println(sizes)
+		if len(sizes) < 3 {
+			fmt.Println("Less than 3 circuits exits")
+			return
+		}
+
+		answer := int64(sizes[0]) * int64(sizes[1]) * int64(sizes[2])
+
+		fmt.Println("Top 3 circuit sizes are: ", sizes[0], sizes[1], sizes[2])
+		fmt.Println("Part1 product is : ", answer)
+	}*/
+}
