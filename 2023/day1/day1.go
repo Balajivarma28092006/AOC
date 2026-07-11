@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-	"regexp"
 )
 
 func getData(filename string) ([]string, error) {
@@ -89,5 +88,4 @@ func main() {
 		ans += number
 	}
 	fmt.Println("Part2 answer is: ", ans)
-	regexp.Match()
 }
