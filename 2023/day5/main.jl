@@ -24,4 +24,33 @@ function parse_input(filename)
     return seeds, all_maps
 end
 
-println(parse_input("test.txt"))
+function solve_part1(filename)
+    seeds, all_maps = parse_input(filename)
+    final_seed = Int[]
+
+    for seed in seeds
+        curr_seed = seed 
+        for layer in all_maps
+            matched = false
+            for (dest, src, len) in layer
+                if src <= curr_seed <= src + len 
+                    curr_seed = dest + (curr_seed - src) # spawn after dest
+                    matched = true
+                    break
+                end
+            end
+        end
+        push!(final_seed, curr_seed)
+    end
+    return minimum(final_seed)
+end
+
+println("part 1: ", solve_part1("inputs.txt"))
+
+function solve_part2(filename)
+    seed, _ = solve_part1(filename)
+    testthis = Int[]
+    
+
+    for i in []
+end
