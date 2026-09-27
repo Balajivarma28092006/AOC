@@ -21,7 +21,7 @@ use std::{
 };
 
 fn main() {
-    let input = fs::read_to_string("../test.txt").unwrap();
+    let input = fs::read_to_string("../inputs.txt").unwrap();
     let mut total = 0;
 
     for line in input.lines() {
