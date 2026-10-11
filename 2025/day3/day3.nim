@@ -1,4 +1,5 @@
 import strutils, sequtils, math
+import strscans
 
 proc combos(digits: seq[int], k: int): seq[seq[int]] =
   if k == 0: return @[@[]]

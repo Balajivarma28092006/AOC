@@ -1,4 +1,3 @@
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -16,6 +15,7 @@ public class Day10 {
     static int[] dc = {0, 0, -1, 1};
 
     public static void main(String[] args) {
+
         Path filepath = Path.of("day10_inputs.txt");
 
         try {

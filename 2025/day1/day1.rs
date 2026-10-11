@@ -4,7 +4,6 @@ use std::io;
 fn part1(contents: &str) -> i32 {
     let mut position: i32 = 50;
     let mut count = 0;
-
     for line in contents.lines() {
         if line.trim().is_empty() {
             continue;

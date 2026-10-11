@@ -6,6 +6,22 @@ import (
 	"os"
 )
 
+func readSomething(filename string) (any, error) {
+	file, err := os.Open(filename)
+	if err != nil {
+		return -1, fmt.Errorf("Bro some error came idk, but take a look: %w", err)
+	}
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan(){
+		line := scanner.Text()
+		fmt.Print(line)
+	}
+	if err := scanner.Err(); err != nil {
+		return -1, fmt.Errorf("Bro scanner gave me some error take a look at it idk what is this: %w", err)
+	}
+	return "Bye bro you did something today", nil
+}
+
 func getData(filename string) ([]string, error) {
 	file, err := os.Open(filename)
 	if err != nil {
