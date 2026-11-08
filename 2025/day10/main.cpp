@@ -118,10 +118,10 @@ int solvePart2(const vector<bool> &target, const vector<vector<int>> &buttons,
     StatePart2 curr = q.front();
     q.pop();
 
-    if (curr.curr_joltages == tart)
-    {
-      return curr.presses;
-    }
+    // if (curr.curr_joltages //?)
+    // {
+    //   return curr.presses;
+    // }
 
     // update the switches similar to the part 1
     for (size_t i = 0; i < buttons.size(); i++)
